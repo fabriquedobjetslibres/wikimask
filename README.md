@@ -41,4 +41,4 @@ il ne doit pas compresser la tête trop fort pour ne pas créer de traumatismes 
 * il ne doit pas toujours comprimer la tête au même endroit,
 * il ne doit pas comporter de fuites.
 
-Plus d'informations sur [[le wiki du projet Wikimask||https://github.com/fabriquedobjetslibres/wikimask/wiki]].
+Plus d'informations sur [le wiki du projet Wikimask](https://github.com/fabriquedobjetslibres/wikimask/wiki).
