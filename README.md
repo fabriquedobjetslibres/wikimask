@@ -3,9 +3,7 @@ Wikimask
 
 Masque de ventilation non invasive  pour nourrisson de 0 à 6 mois  en réanimation pédiatrique sous licence libre
 
-Un projet ![Handilab](http://www.fablab-lyon.fr/wp-content/uploads/2013/07/handilab_logo.png) par
-
-![Fabrique d'Objets Libres](http://www.fablab-lyon.fr/wp-content/uploads/2012/12/logos.jpg)
+Un projet ![Handilab](http://www.fablab-lyon.fr/wp-content/uploads/2013/07/handilab_logo.png) par la ![Fabrique d'Objets Libres](http://www.fablab-lyon.fr/wp-content/uploads/2012/12/logos.jpg)
 
 Résumé:
 =======
