@@ -8,7 +8,7 @@ Un projet ![Handilab](http://www.fablab-lyon.fr/wp-content/uploads/2013/07/handi
 Résumé:
 =======
 
-Sur l'impulsion de Bruno Massenavette, médecin aux Hôpitaux de Lyon, la **Fabrique d’Objets Libres** et le **Club Agile Rhône-Alpes de Lyon** s'associent pour réaliser un masque de _Ventilation Non Invasive_ pour les patients âgés de 0 à 6 mois. Cet outil n’existe pas, et l’utilisation de masques trop grands entraîne des complications trop graves pour être ignorées. Ce projet a pour but de combler un manque et de rendre la vie de ces patients, et de beaucoup d’autres dans le monde, considérablement plus facile.
+Sur l'impulsion de Bruno Massenavette, médecin aux Hôpitaux de Lyon, la [**Fabrique d’Objets Libres**](http://fablab-lyon.fr) et le [**Club Agile Rhône-Alpes de Lyon**](http://lyon.clubagilerhonealpes.org/) s'associent pour réaliser un masque de _Ventilation Non Invasive_ pour les patients âgés de 0 à 6 mois. Cet outil n’existe pas, et l’utilisation de masques trop grands entraîne des complications trop graves pour être ignorées. Ce projet a pour but de combler un manque et de rendre la vie de ces patients, et de beaucoup d’autres dans le monde, considérablement plus facile.
 
   Ce masque pourra être fabriqué à l’aide des technologies disponibles dans un fablab, où qu’il soit dans le monde, et sera diffusé gratuitement et librement dans le monde entier selon les termes de la [Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 3.0 France](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/).
 
