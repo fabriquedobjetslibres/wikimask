@@ -6,7 +6,7 @@ function main(params)
   return([
     //clip(params.diametre_interieur, params.diametre_exterieur, params.hauteur_interstice, params.ecart, 2, 1 ),
     //adaptateur_tuyau(10,22).translate([30,20,0]),
-    nez(32,23,10,0.4)
+    nez(params.largeur_nez,params.hauteur_nez,params.diametre_tuyau_nez,0.4)
     //raccord_tuyau(12).translate([0,0,2])
   ]);
 }
@@ -14,10 +14,13 @@ function main(params)
 // Paramètres modifiables par l'utilisateur
 function getParameterDefinitions() {
   return [
-    { name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 12 },
-    { name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 14 },
-    { name: 'hauteur_interstice', caption: 'Hauteur de l\'interstice:', type: 'float', default: 4 },
-    { name: 'ecart', caption: 'Écart:', type: 'float', default: 1 },
+    //{ name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 12 },
+    //{ name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 14 },
+    //{ name: 'hauteur_interstice', caption: 'Hauteur de l\'interstice:', type: 'float', default: 4 },
+    //{ name: 'ecart', caption: 'Écart:', type: 'float', default: 1 },
+    { name: 'largeur_nez', caption: 'Largeur nez:', type: 'float', default: 39 },
+    { name: 'hauteur_nez', caption: 'Hauteur nez:', type: 'float', default: 23 },
+    { name: 'diametre_tuyau_nez', caption: 'Diamètre du tuyau d\'arrivée d\'air:', type: 'float', default: 10 },
   ];
 }
 
