@@ -4,42 +4,62 @@
 function main(params)
 {
   return([
-    //clip(
-    //  params.diametre_interieur,
-    //  params.diametre_exterieur,
-    //  params.hauteur_interstice,
-    //  params.ecart
-    //),
-    adaptateur_tuyau(10,16).translate([30,20,0])
-    //insert_tuyau(20)
-    //raccord_tuyau(22)
+    //clip(params.diametre_interieur, params.diametre_exterieur, params.hauteur_interstice, params.ecart, 2, 1 ),
+    //adaptateur_tuyau(10,22).translate([30,20,0]),
+    nez(32,23,10,0.4)
+    //raccord_tuyau(12).translate([0,0,2])
   ]);
 }
 
 // Paramètres modifiables par l'utilisateur
 function getParameterDefinitions() {
   return [
-    { name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 8 },
-    { name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 10 },
+    { name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 12 },
+    { name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 14 },
     { name: 'hauteur_interstice', caption: 'Hauteur de l\'interstice:', type: 'float', default: 4 },
     { name: 'ecart', caption: 'Écart:', type: 'float', default: 1 },
   ];
 }
 
+// Partie nasale du masque; le masque proprement dit.
+function nez(largeur, hauteur,diametre,epaisseur){
+  var rayon = 3;
+  var g_cercle = circle({r: rayon + 2, center: true});
+  var cercle = circle({r: rayon, center: true});
+  var enveloppe_nez = hull(
+      g_cercle.translate([(largeur/2) - rayon, 0, 0]),
+      g_cercle.translate([-((largeur/2) - rayon),0,0]),
+      g_cercle.translate([0,hauteur - rayon,0])
+    );
+  // Base avec le trou pour le tuyau
+  var base_nez = linear_extrude({height: epaisseur}, enveloppe_nez).subtract(cylinder({h: epaisseur *2, r: diametre/2, center: true}).translate([0,hauteur/2 - rayon,0]));
+  var trou_nez = hull(
+    cercle.translate([(largeur/2) - rayon, 0, 0]),
+    cercle.translate([-((largeur/2) - rayon),0,0]),
+    cercle.translate([0,hauteur - rayon,0])
+  );
+
+  // Extrusion
+  var base_extrusion = enveloppe_nez.subtract(trou_nez).translate([0,0,epaisseur]);
+  return base_nez.union(linear_extrude({height: 10}, base_extrusion));
+}
+
 // Revoir les mesures: diamètres au lieu de rayons!!
 function clip(diametre_interieur, diametre_exterieur, hauteur_interstice, ecart, largeur_deport, epaisseur_deport, largeur_clip, epaisseur_clip){
+    var ri = diametre_interieur / 2;
+    var re = diametre_exterieur / 2;
     if(arguments.length < 5) largeur_deport = 2;
     if(arguments.length < 6) epaisseur_deport = 2;
     if(arguments.length < 7) largeur_clip = largeur_deport / 2;
     if(arguments.length < 8) epaisseur_clip = epaisseur_deport;
    return difference(
        union(
-         cylinder({r: diametre_exterieur + largeur_deport, h:epaisseur_deport}),
-         cylinder({r:diametre_exterieur - 0.2, h: hauteur_interstice}).translate([0,0,epaisseur_deport]),
-         cylinder({r1: diametre_exterieur + largeur_clip, r2: diametre_exterieur - 0.2, h: epaisseur_clip}).translate([0,0,hauteur_interstice + epaisseur_deport])
+         cylinder({r: re + largeur_deport, h:epaisseur_deport}),
+         cylinder({r:re - 0.2, h: hauteur_interstice}).translate([0,0,epaisseur_deport]),
+         cylinder({r1: re + largeur_clip, r2: re - 0.2, h: epaisseur_clip}).translate([0,0,hauteur_interstice + epaisseur_deport])
        ),
-       cylinder({r: diametre_interieur, h:hauteur_interstice + epaisseur_deport + epaisseur_clip}),
-       cube({size: [(diametre_exterieur + largeur_deport) * 2,ecart, hauteur_interstice + epaisseur_clip]}).translate([(diametre_exterieur  + largeur_deport)* -1,ecart * -0.5,epaisseur_deport ])
+       cylinder({r: ri, h:hauteur_interstice + epaisseur_deport + epaisseur_clip}),
+       cube({size: [(re + largeur_deport) * 2,ecart, hauteur_interstice + epaisseur_clip]}).translate([(re  + largeur_deport)* -1,ecart * -0.5,epaisseur_deport ])
        );
   }
 
