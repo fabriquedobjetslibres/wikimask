@@ -1,6 +1,9 @@
 // Wikimask
 // Copyright 2013 - Fabrique d'Objets Libres
 // Created by Stéphane Mor <stephanemor@gmail.com>
+// Les objets créés avec cette application sont sous Licence Creative Commons (CC-BY-SA).
+
+// Boucle principale du programme
 function main(params)
 {
   return([
@@ -70,7 +73,7 @@ function attache_nez(largeur_nez, hauteur_nez, diametre_tuyau, epaisseur){
   return linear_extrude({height: epaisseur}, attache_nez_2D(largeur_nez,hauteur_nez,diametre_tuyau));
 }
 
-// Revoir les mesures: diamètres au lieu de rayons!!
+// Clip permettant de relier les pièces du dispositif entre elles au niveau du nez 
 function clip(diametre_interieur, diametre_exterieur, hauteur_interstice, ecart, largeur_deport, epaisseur_deport, largeur_clip, epaisseur_clip){
     var ri = diametre_interieur / 2;
     var re = diametre_exterieur / 2;
@@ -103,6 +106,7 @@ function insert_tuyau(diametre){
   );
 }
 
+// Adaptateur pour raccorder deux tuyaux de tailles différentes.
 function adaptateur_tuyau(diametre_petit, diametre_grand){
   var rp = diametre_petit / 2;
   var rg = diametre_grand / 2;
