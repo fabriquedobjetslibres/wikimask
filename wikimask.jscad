@@ -10,7 +10,7 @@ function main(params)
     clip(params.diametre_interieur, params.diametre_exterieur, params.hauteur_interstice, params.ecart, 2, 1 ).translate([0,-30,0]),
     //adaptateur_tuyau(10,22).translate([30,20,0]),
     nez(params.largeur_nez,params.hauteur_nez,params.profondeur_nez,params.diametre_tuyau_nez,0.4),
-    //appui_frontal(params.largeur_nez + 10, params.hauteur_nez)
+    appui_frontal(params.largeur_nez + 10, params.hauteur_nez).translate([-60,-30,0]),
     attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, 0.8).translate([60,0,0]),
     raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5).translate([30,-30,0])
 
