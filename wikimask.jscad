@@ -20,10 +20,10 @@ function main(params)
 // Paramètres modifiables par l'utilisateur
 function getParameterDefinitions() {
   return [
-    //{ name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 12 },
-    //{ name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 14 },
-    //{ name: 'hauteur_interstice', caption: 'Hauteur de l\'interstice:', type: 'float', default: 4 },
-    //{ name: 'ecart', caption: 'Écart:', type: 'float', default: 1 },
+    { name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 12 },
+    { name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 14 },
+    { name: 'hauteur_interstice', caption: 'Hauteur de l\'interstice:', type: 'float', default: 4 },
+    { name: 'ecart', caption: 'Écart:', type: 'float', default: 1 },
     { name: 'largeur_nez', caption: 'Largeur nez:', type: 'float', default: 39 },
     { name: 'hauteur_nez', caption: 'Hauteur nez:', type: 'float', default: 23 },
     { name: 'profondeur_nez', caption: 'Profondeur nez:', type: 'float', default: 14 },
