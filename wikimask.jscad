@@ -49,8 +49,8 @@ function nez(largeur, hauteur,profondeur,diametre,epaisseur){
   return base_nez.union(linear_extrude({height: profondeur}, base_extrusion));
 }
 
-// Attache du bandeau sur la partie nasale du masque.
-function attache_nez(largeur_nez, hauteur_nez, diametre_tuyau, epaisseur){
+// Attache du bandeau sur la partie nasale du masque en 2D, pour la découpe laser.
+function attache_nez_2D(largeur_nez, hauteur_nez, diametre_tuyau){
   var centre = circle({r: diametre_tuyau/2 + 4, center: true});
   var branche = hull(centre,circle({r: 5, center: true}).translate([largeur_nez / 2 + 10,-10,0]))
     .subtract(circle({r: 3, center: true}).translate([largeur_nez/2 + 10, -10,0])); // Trou d'attache du bandeau
@@ -59,7 +59,12 @@ function attache_nez(largeur_nez, hauteur_nez, diametre_tuyau, epaisseur){
   // Branche du haut
   var branche_haut = hull(circle({r: diametre_tuyau /2 + 1, center: true}), circle({r: 5, center: true}).translate([0,hauteur_nez + 10, 0])).subtract(circle({r: 3, center: true}).translate([0,hauteur_nez+10,0]));
   var base = branche.union(branche2).union(branche_haut).subtract(circle({r: diametre_tuyau / 2, center: true})); // Trou pour le tuyau
-  return linear_extrude({height: epaisseur}, base);
+  return base;
+}
+
+// Attache du bandeau en 3D
+function attache_nez(largeur_nez, hauteur_nez, diametre_tuyau, epaisseur){
+  return linear_extrude({height: epaisseur}, attache_nez_2D(largeur_nez,hauteur_nez,diametre_tuyau));
 }
 
 // Revoir les mesures: diamètres au lieu de rayons!!
