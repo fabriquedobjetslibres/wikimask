@@ -7,11 +7,13 @@
 function main(params)
 {
   return([
-    //clip(params.diametre_interieur, params.diametre_exterieur, params.hauteur_interstice, params.ecart, 2, 1 ),
+    clip(params.diametre_interieur, params.diametre_exterieur, params.hauteur_interstice, params.ecart, 2, 1 ).translate([0,-30,0]),
     //adaptateur_tuyau(10,22).translate([30,20,0]),
     nez(params.largeur_nez,params.hauteur_nez,params.profondeur_nez,params.diametre_tuyau_nez,0.4),
-    //attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, 0.8),
-    //raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5)
+    //appui_frontal(params.largeur_nez + 10, params.hauteur_nez)
+    attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, 0.8).translate([60,0,0]),
+    raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5).translate([30,-30,0])
+
   ]);
 }
 
@@ -92,7 +94,18 @@ function clip(diametre_interieur, diametre_exterieur, hauteur_interstice, ecart,
        );
   }
 
+// Appui frontal, relié à la partie nasale
+function appui_frontal(largeur, hauteur){
+  var base = cylinder({r: largeur, h: 1, center: true}).scale([1,hauteur/largeur,1]).subtract(cylinder({r: 3, center:true}));
+  for(var i=0; i<5; i++){
+    var x= -(largeur/2) + (i* 1/4 * largeur);
+    base.union(cylinder({r: 2, h: 20, center: true}).translate([x,0,5] ));
+  }
+  return base;
+}
+
 // Un insert de tuyau permet de connecter un tuyau au reste d'un dispositif
+// TODO: très lent, essayer avec une révolution d'une forme 2D
 function insert_tuyau(diametre){
   var rayon = diametre / 2;
   return difference(
