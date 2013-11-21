@@ -8,7 +8,7 @@ function main(params)
     //adaptateur_tuyau(10,22).translate([30,20,0]),
     nez(params.largeur_nez,params.hauteur_nez,params.profondeur_nez,params.diametre_tuyau_nez,0.4),
     //attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, 0.8),
-    //raccord_tuyau(12).translate([0,0,2])
+    //raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5)
   ]);
 }
 
@@ -38,7 +38,10 @@ function nez(largeur, hauteur,profondeur,diametre,epaisseur){
     );
   // Base avec le trou pour le tuyau
   var base_nez = linear_extrude({height: epaisseur}, enveloppe_nez)
-    .subtract(cylinder({h: epaisseur *2, r: diametre/2, center: true}).translate([0,hauteur/2 - rayon,0]));
+    .subtract(cylinder({h: epaisseur *2, r: diametre/2, center: true}).translate([0,hauteur/2 - rayon,0])) // Trou du tuyau
+    .subtract(cylinder({h: epaisseur *2, r: 1, center: true}).translate([largeur / 4, hauteur / 4,0])) // Fuite droite
+    .subtract(cylinder({h: epaisseur *2, r: 1, center: true}).translate([-(largeur / 4), hauteur / 4,0])) // Fuite gauche
+  ;
   var trou_nez = hull(
     cercle.translate([(largeur/2) - rayon, 0, 0]),
     cercle.translate([-((largeur/2) - rayon),0,0]),
@@ -115,19 +118,18 @@ function adaptateur_tuyau(diametre_petit, diametre_grand){
   );
 }
 
-// Bancal
-function raccord_tuyau(tuyau, largeur_contour){
-  if(arguments.length < 2) largeur_contour = 3;
-  var arete = tuyau + (largeur_contour * 2);
-  return difference(
-    union(
-      // Base
-      cylinder({r: (tuyau / 2) + largeur_contour, h: 2}),
-      cube({size: [tuyau * 2, tuyau + (largeur_contour * 2), 2]}).translate([0, - (tuyau /2) - largeur_contour, 0]),
-      // Passage coude
-      cube({size: tuyau + (largeur_contour * 2)}).translate([tuyau - largeur_contour * 2, - (tuyau / 2) - largeur_contour, 2])
-    ),
-    cylinder({r: tuyau/2, h: 2}),
-    cylinder({r: tuyau/2, h: tuyau + (largeur_contour*2)}).rotateY(90).translate([tuyau - largeur_contour * 2, 0, tuyau / 2 + largeur_contour * 2])
-  );
+// Raccord reliant le tuyau du masque au reste du circuit d'air
+function raccord_tuyau(diametre_tuyau, longueur){
+  var base = circle({r: diametre_tuyau /2 + 2, center: true})
+    .union(square([longueur, diametre_tuyau + 4]).center([false,true]))
+    .subtract(circle({r: diametre_tuyau / 2, center:true}))
+    .extrude({height: 2});
+  var pont = cylinder({r: diametre_tuyau /2 + 2, h: longueur / 3}) // enveloppe
+    .union(cube([diametre_tuyau / 2 + 2, diametre_tuyau + 4, longueur/3]).center([false, true]))
+    .subtract(cylinder({r: diametre_tuyau/2, h: longueur/3})) // trou pour le tuyau
+    .center([false, true])
+    .rotateY(90)
+    .translate([longueur, 0,diametre_tuyau / 2 + 2]) // Placement
+  ;
+  return base.union(pont);
 } 
