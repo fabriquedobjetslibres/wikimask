@@ -21,9 +21,9 @@ function main(params)
 function getParameterDefinitions() {
   return [
     { name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 8 },
-    { name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 10 },
+    { name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 9.6 },
     { name: 'hauteur_interstice', caption: 'Hauteur de l\'interstice:', type: 'float', default: 4 },
-    { name: 'ecart', caption: 'Écart:', type: 'float', default: 1 },
+    { name: 'ecart', caption: 'Écart:', type: 'float', default: 2 },
     { name: 'largeur_nez', caption: 'Largeur nez:', type: 'float', default: 39 },
     { name: 'hauteur_nez', caption: 'Hauteur nez:', type: 'float', default: 23 },
     { name: 'profondeur_nez', caption: 'Profondeur nez:', type: 'float', default: 14 },
@@ -99,7 +99,7 @@ function appui_frontal(largeur, hauteur){
   var base = cylinder({r: largeur, h: 1, center: true}).scale([1,hauteur/largeur,1]).subtract(cylinder({r: 3, center:true}));
   for(var i=0; i<5; i++){
     var x= -(largeur/2) + (i* 1/4 * largeur);
-    base.union(cylinder({r: 2, h: 20, center: true}).translate([x,0,5] ));
+    base.union(cylinder({r: 2, h: 20, center: true}).translate([x,0,5] ).rotateX(90));
   }
   return base;
 }
