@@ -8,12 +8,15 @@ function main(params)
 {
   return([
     clip(params.diametre_interieur, params.diametre_exterieur, params.hauteur_interstice, params.ecart, 2, 1 ).translate([0,-30,0]),
-    //adaptateur_tuyau(10,22).translate([30,20,0]),
-    nez(params.largeur_nez,params.hauteur_nez,params.profondeur_nez,params.diametre_tuyau_nez,0.4),
-    appui_frontal(params.largeur_nez + 10, params.hauteur_nez).translate([-60,-30,0]),
-    attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, 0.8).translate([60,0,0]),
+    nez(params.largeur_nez,params.hauteur_nez,params.profondeur_nez,params.diametre_tuyau_nez,1),
+    attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, 1).translate([60,0,0]),
     raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5).translate([30,-30,0])
 
+    // Pas utile à chaque fois
+    //adaptateur_tuyau(10,22).translate([30,20,0]),
+
+    // Pas encore prêt
+    //appui_frontal(params.largeur_nez + 10, params.hauteur_nez).translate([-60,-30,0]),
   ]);
 }
 
@@ -40,21 +43,48 @@ function nez(largeur, hauteur,profondeur,diametre,epaisseur){
       g_cercle.translate([(largeur/2) - rayon, 0, 0]),
       g_cercle.translate([-((largeur/2) - rayon),0,0]),
       g_cercle.translate([0,hauteur - rayon,0])
-    );
+    ).scale([0.75,0.75]);
   // Base avec le trou pour le tuyau
   var base_nez = linear_extrude({height: epaisseur}, enveloppe_nez)
     .subtract(cylinder({h: epaisseur *2, r: diametre/2, center: true}).translate([0,hauteur/2 - rayon,0])) // Trou du tuyau
-    .subtract(cylinder({h: epaisseur *2, r: 1, center: true}).translate([largeur / 4, hauteur / 4,0])) // Fuite droite
-    .subtract(cylinder({h: epaisseur *2, r: 1, center: true}).translate([-(largeur / 4), hauteur / 4,0])) // Fuite gauche
+    //.subtract(cylinder({h: epaisseur *2, r: 1, center: true}).translate([largeur / 4, hauteur / 4,0])) // Fuite droite
+    //.subtract(cylinder({h: epaisseur *2, r: 1, center: true}).translate([-(largeur / 4), hauteur / 4,0])) // Fuite gauche
   ;
   var trou_nez = hull(
     cercle.translate([(largeur/2) - rayon, 0, 0]),
     cercle.translate([-((largeur/2) - rayon),0,0]),
     cercle.translate([0,hauteur - rayon,0])
-  );
-  // Extrusion
-  var base_extrusion = enveloppe_nez.subtract(trou_nez).translate([0,0,epaisseur]);
-  return base_nez.union(linear_extrude({height: profondeur}, base_extrusion));
+  ).scale([0.75,0.75]);
+
+  // Vase extérieur
+  var path = enveloppe_nez.getOutlinePaths()[0];
+  var csg = CSG.Polygon.createFromPoints(path.points);
+
+  var vase_exterieur = csg.solidFromSlices({
+    numslices: 2,
+    callback: function(t, slice) {
+      return this.scale(1 + 0.45*t).translate([0,0,t * profondeur]);
+    }
+  });
+
+  // Vase intérieur
+  var path = trou_nez.getOutlinePaths()[0];
+  var csg = CSG.Polygon.createFromPoints(path.points);
+
+  var vase_interieur = csg.solidFromSlices({
+    numslices: 2,
+    callback: function(t, slice) {
+      return this.scale(1 + 0.33*t).translate([0,0,t * profondeur]);
+    }
+  });
+
+  // Fuites sous les narines, pour ne pas gêner?
+  var vase = vase_exterieur.subtract(vase_interieur)
+             .subtract(cylinder({r:1, h:10, center:true}).rotateX(90).translate([-(largeur/5), -rayon, profondeur/2]))
+             .subtract(cylinder({r:1, h:10, center:true}).rotateX(90).translate([largeur/5, -rayon, profondeur/2]))
+            ;
+
+  return base_nez.union(vase);
 }
 
 // Attache du bandeau sur la partie nasale du masque en 2D, pour la découpe laser.
