@@ -16,12 +16,12 @@ function main(params)
     objets.push(attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, params.epaisseur_flexibles).translate([60,0,0]));
   if(params.genRaccordTuyau==1)
     objets.push(raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5).translate([30,-30,0]));
+  if(params.genAppuiFront==1)
+    // Pas encore vraiment prêt
+    objets.push(appui_frontal(params.largeur_nez + 10, params.hauteur_nez).translate([-60,-30,0]));
 
   // Pas utile à chaque fois
-  //adaptateur_tuyau(10,22).translate([30,20,0]),
-
-  // Pas encore prêt
-  //appui_frontal(params.largeur_nez + 10, params.hauteur_nez).translate([-60,-30,0]),
+  //objets.push(adaptateur_tuyau(10,22).translate([30,20,0]));
 
   return(objets);
 }
@@ -34,6 +34,7 @@ function getParameterDefinitions() {
     { name: 'genClip', type: 'choice', caption: 'Générer le clips?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
     { name: 'genAttacheNez', type: 'choice', caption: 'Générer l\'attache nasale?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
     { name: 'genRaccordTuyau', type: 'choice', caption: 'Générer le raccord de tuyau?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
+    { name: 'genAppuiFront', type: 'choice', caption: 'Générer le raccord de tuyau?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
     // Caractéristiques techniques du masque
     { name: 'largeur_nez', caption: 'Largeur nez:', type: 'float', default: 39 },
     { name: 'hauteur_nez', caption: 'Hauteur nez:', type: 'float', default: 23 },
@@ -106,14 +107,20 @@ function attache_nez_2D(largeur_nez, hauteur_nez, diametre_tuyau){
   branche.subtract(circle({r: 6, center: true}));
   var branche2 = branche.mirroredX(); // 2ème branche en miroir
   // Branche du haut
-  var branche_haut = hull(circle({r: diametre_tuyau /2 + 1, center: true}), circle({r: 5, center: true}).translate([0,hauteur_nez + 10, 0])).subtract(circle({r: 3, center: true}).translate([0,hauteur_nez+10,0]));
+  var branche_haut = hull(circle({r: diametre_tuyau /2 + 1, center: true}), circle({r: 5, center: true}).translate([0,hauteur_nez + 10, 0]))
+                     //.subtract(circle({r: 3, center: true}).translate([0,hauteur_nez+10,0]))
+                     ;
   var base = branche.union(branche2).union(branche_haut).subtract(circle({r: diametre_tuyau / 2, center: true})); // Trou pour le tuyau
   return base;
 }
 
 // Attache du bandeau en 3D
 function attache_nez(largeur_nez, hauteur_nez, diametre_tuyau, epaisseur){
-  return linear_extrude({height: epaisseur}, attache_nez_2D(largeur_nez,hauteur_nez,diametre_tuyau));
+  var base = linear_extrude({height: epaisseur}, attache_nez_2D(largeur_nez,hauteur_nez,diametre_tuyau))
+             .union(cylinder({r: 1.5, h: 3}).translate([0,hauteur_nez+10]))
+             .union(sphere(3).translate([0,hauteur_nez+10, 5]))
+             ;
+  return base;
 }
 
 // Clip permettant de relier les pièces du dispositif entre elles au niveau du nez 
