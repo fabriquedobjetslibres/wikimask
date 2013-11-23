@@ -6,31 +6,42 @@
 // Boucle principale du programme
 function main(params)
 {
-  return([
-    clip(params.diametre_interieur, params.diametre_exterieur, params.hauteur_interstice, params.ecart, 2, 1 ).translate([0,-30,0]),
-    nez(params.largeur_nez,params.hauteur_nez,params.profondeur_nez,params.diametre_tuyau_nez,1),
-    attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, 1).translate([60,0,0]),
-    raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5).translate([30,-30,0])
+  var epaisseur_flexibles = 1;
+  var objets = [];
+  if(params.genNez==1)
+    objets.push(nez(params.largeur_nez,params.hauteur_nez,params.profondeur_nez,params.diametre_tuyau_nez,1));
+  if(params.genClip==1)
+    objets.push(clip(params.diametre_tuyau_nez - 2, params.diametre_tuyau_nez - 0.4, 1 + 2*params.epaisseur_flexibles, params.ecart, 2, 1 ).translate([0,-30,0]));
+  if(params.genAttacheNez==1)
+    objets.push(attache_nez(params.largeur_nez, params.hauteur_nez, params.diametre_tuyau_nez, params.epaisseur_flexibles).translate([60,0,0]));
+  if(params.genRaccordTuyau==1)
+    objets.push(raccord_tuyau(params.diametre_tuyau_nez,params.hauteur_nez + 5).translate([30,-30,0]));
 
-    // Pas utile à chaque fois
-    //adaptateur_tuyau(10,22).translate([30,20,0]),
+  // Pas utile à chaque fois
+  //adaptateur_tuyau(10,22).translate([30,20,0]),
 
-    // Pas encore prêt
-    //appui_frontal(params.largeur_nez + 10, params.hauteur_nez).translate([-60,-30,0]),
-  ]);
+  // Pas encore prêt
+  //appui_frontal(params.largeur_nez + 10, params.hauteur_nez).translate([-60,-30,0]),
+
+  return(objets);
 }
 
 // Paramètres modifiables par l'utilisateur
 function getParameterDefinitions() {
   return [
-    { name: 'diametre_interieur', caption: 'Diamètre intérieur:', type: 'float', default: 8 },
-    { name: 'diametre_exterieur', caption: 'Diametre extérieur:', type: 'float', default: 9.6 },
-    { name: 'hauteur_interstice', caption: 'Hauteur de l\'interstice:', type: 'float', default: 4 },
-    { name: 'ecart', caption: 'Écart:', type: 'float', default: 2 },
+    // Parties à imprimer
+    { name: 'genNez', type: 'choice', caption: 'Générer le masque?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
+    { name: 'genClip', type: 'choice', caption: 'Générer le clips?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
+    { name: 'genAttacheNez', type: 'choice', caption: 'Générer l\'attache nasale?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
+    { name: 'genRaccordTuyau', type: 'choice', caption: 'Générer le raccord de tuyau?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
+    // Caractéristiques techniques du masque
     { name: 'largeur_nez', caption: 'Largeur nez:', type: 'float', default: 39 },
     { name: 'hauteur_nez', caption: 'Hauteur nez:', type: 'float', default: 23 },
     { name: 'profondeur_nez', caption: 'Profondeur nez:', type: 'float', default: 14 },
     { name: 'diametre_tuyau_nez', caption: 'Diamètre du tuyau d\'arrivée d\'air:', type: 'float', default: 10 },
+    // Pour le clips
+    { name: 'ecart', caption: 'Écartement du clips:', type: 'float', default: 2 },
+    { name: 'epaisseur_flexibles', caption: 'Épaisseur des parties flexibles:', type: 'float', default: 1 },
   ];
 }
 
