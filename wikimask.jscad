@@ -34,7 +34,7 @@ function getParameterDefinitions() {
     { name: 'genClip', type: 'choice', caption: 'Générer le clips?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
     { name: 'genAttacheNez', type: 'choice', caption: 'Générer l\'attache nasale?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
     { name: 'genRaccordTuyau', type: 'choice', caption: 'Générer le raccord de tuyau?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
-    { name: 'genAppuiFront', type: 'choice', caption: 'Générer le raccord de tuyau?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
+    { name: 'genAppuiFront', type: 'choice', caption: 'Générer l\'appui frontal?', values: [0, 1], captions: ["Non", "Oui"], initial: 1 },
     // Caractéristiques techniques du masque
     { name: 'largeur_nez', caption: 'Largeur nez:', type: 'float', default: 39 },
     { name: 'hauteur_nez', caption: 'Hauteur nez:', type: 'float', default: 23 },
